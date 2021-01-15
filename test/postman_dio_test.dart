@@ -1,13 +1,22 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:postman_dio/postman_dio.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
-    expect(() => calculator.addOne(null), throwsNoSuchMethodError);
+  test('return value always', () async {
+    final postmanDioLogger = PostmanDioLogger();
+
+    final request = RequestOptions();
+    expect(await postmanDioLogger.onRequest(request), request);
+    expect(await postmanDioLogger.onRequest(null), null);
+
+    final response = Response();
+    expect(await postmanDioLogger.onResponse(null), null);
+    expect(await postmanDioLogger.onResponse(response), response);
+
+    final dioError = DioError();
+    expect(await postmanDioLogger.onError(null), null);
+    expect(await postmanDioLogger.onError(dioError), dioError);
   });
 }

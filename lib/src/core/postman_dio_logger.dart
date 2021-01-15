@@ -6,9 +6,8 @@ class PostmanDioLogger extends Interceptor {
   PostmanDioLogger({
     this.logPrint = print,
     this.enablePrint = false,
+    this.maxMilliseconds,
   });
-
-  final stopwatch = Stopwatch();
 
   // ignore: use_setters_to_change_properties
   static void changeNameCollection(String name) {
@@ -23,7 +22,11 @@ class PostmanDioLogger extends Interceptor {
     item: [],
   );
 
+  final stopwatch = Stopwatch();
   final bool enablePrint;
+
+  /// Log if the request is executed more than maxMilliseconds ms, if 'null' log all request
+  final int maxMilliseconds;
 
   /// Log printer; defaults logPrint log to console.
   /// In flutter, you'd better use debugPrint.
@@ -46,7 +49,7 @@ class PostmanDioLogger extends Interceptor {
     try {
       stopwatch.start();
       newRequest = ItemPostmanRequest(
-        name: options.uri.toString(),
+        name: options?.path == null ? null : options?.uri?.toString(),
         request: await RequestPostman.fromRequest(options),
       );
       postmanCollection.item.add(newRequest);
@@ -60,9 +63,9 @@ class PostmanDioLogger extends Interceptor {
   @override
   Future onError(DioError err) async {
     try {
-      stopwatch.stop();
+      _checkTime();
       newRequest ??= ItemPostmanRequest(
-        name: err?.request?.uri.toString(),
+        name: err?.request?.path == null ? null : err?.request?.uri.toString(),
         request: await RequestPostman.fromRequest(err?.request),
       );
       newRequest
@@ -70,9 +73,7 @@ class PostmanDioLogger extends Interceptor {
         ..request = newRequest.request?.copyWith(
           description: err.toString(),
         );
-      if (enablePrint) {
-        logPrint(newRequest.toJson());
-      }
+      await _log();
     } catch (error, stackTrace) {
       l.log('$error',
           name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
@@ -83,35 +84,56 @@ class PostmanDioLogger extends Interceptor {
   @override
   Future onResponse(Response response) async {
     try {
-      stopwatch.stop();
+      _checkTime();
       newRequest
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest.name}'
         ..request = newRequest.request.copyWith(
-          description: response.toString(),
+          description: response?.toString(),
         )
         ..response = <ResponsePostman>[
           ResponsePostman(
-            name: response.request.uri.toString(),
-            code: response.statusCode,
-            status: response.statusMessage,
-            originalRequest: await RequestPostman.fromRequest(response.request),
-            body: await TransformerJson.encode(response.data),
-            header: response.headers.map.keys
-                .map((key) => HeaderPostman(
+            name: response?.request?.path == null
+                ? null
+                : response?.request?.uri?.toString(),
+            code: response?.statusCode,
+            status: response?.statusMessage,
+            originalRequest:
+                await RequestPostman.fromRequest(response?.request),
+            body: await TransformerJson.encode(response?.data),
+            header: response?.headers?.map?.keys
+                ?.map((key) => HeaderPostman(
                       key: key,
                       value: response.headers[key]?.toString(),
                     ))
-                .toList(),
+                ?.toList(),
           ),
         ];
-      if (enablePrint) {
-        logPrint(await getPrintValue(newRequest));
-      }
+      await _log();
     } catch (error, stackTrace) {
       l.log('$error',
           name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
     return response;
+  }
+
+  void _checkTime() {
+    stopwatch.stop();
+    if (maxMilliseconds != null) {
+      if (stopwatch.elapsedMilliseconds < maxMilliseconds) {
+        postmanCollection.item.remove(newRequest);
+      }
+    }
+  }
+
+  Future _log() async {
+    if (enablePrint) {
+      if (maxMilliseconds != null) {
+        if (stopwatch.elapsedMilliseconds < maxMilliseconds) {
+          return;
+        }
+      }
+      logPrint(await getPrintValue(newRequest));
+    }
   }
 
   Future<String> getPrintJson(ItemPostmanRequest request) async {

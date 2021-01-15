@@ -80,15 +80,15 @@ class RequestPostman {
     }
     return RequestPostman(
       method: options.method,
-      url: UrlPostman.fromUri(options.uri),
+      url: options?.path == null ? null : UrlPostman.fromUri(options?.uri),
       body: BodyPostman(
-          raw: await TransformerJson.encode(DartDynamic.asMap(options.data))),
-      header: options.headers.keys
-          .map((key) => HeaderPostman(
+          raw: await TransformerJson.encode(DartDynamic.asMap(options?.data))),
+      header: options?.headers?.keys
+          ?.map((key) => HeaderPostman(
                 key: key,
                 value: options.headers[key]?.toString(),
               ))
-          .toList(),
+          ?.toList(),
     );
   }
 }

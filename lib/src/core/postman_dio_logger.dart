@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:postman_dio/helpers/index.dart';
-import 'package:postman_dio/models/index.dart';
+import 'package:postman_dio/helpers.dart';
+import 'package:postman_dio/models.dart';
 
 class PostmanDioLogger extends Interceptor {
   PostmanDioLogger({

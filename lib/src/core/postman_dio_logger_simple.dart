@@ -1,5 +1,5 @@
-import 'package:postman_dio/core/postman_dio_logger.dart';
-import 'package:postman_dio/models/index.dart';
+import 'package:postman_dio/models.dart';
+import 'package:postman_dio/postman_dio.dart';
 
 class PostmanDioLoggerSimple extends PostmanDioLogger {
   PostmanDioLoggerSimple({

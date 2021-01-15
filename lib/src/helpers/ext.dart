@@ -1,4 +1,4 @@
-import 'package:postman_dio/helpers/index.dart';
+import 'package:postman_dio/helpers.dart';
 
 extension Linq<T> on List<T> {
   /// default = null

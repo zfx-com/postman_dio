@@ -2,7 +2,7 @@ import 'dart:convert';
 
 // import 'package:computer/computer.dart';
 import 'package:flutter/foundation.dart';
-import 'package:postman_dio/helpers/index.dart' show DartDynamic;
+import 'package:postman_dio/helpers.dart' show DartDynamic;
 
 class TransformerJson {
   static dynamic _decode(String text) async {

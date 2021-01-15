@@ -1,4 +1,4 @@
-import 'package:postman_dio/core/index.dart';
+import 'package:postman_dio/helpers.dart';
 
 class InfoCollection {
   InfoCollection({

@@ -1,6 +1,11 @@
 # postman_dio by zfx.com
 Logger Interceptor for Dio with export to "Postman Collection v2.1".json
 
+## Import
+
+```dart
+import 'package:postman_dio/postman_dio.dart';
+```
 ## Change export collection
 ```dart
       PostmanDioLogger.changeNameCollection('MyAwesomeApp ${DateTime.now().toUtc()}');

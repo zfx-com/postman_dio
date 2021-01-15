@@ -36,6 +36,11 @@ class PostmanDioLogger extends Interceptor {
 
   ItemPostmanRequest newRequest;
 
+  /// JSON collection for import by the postman or another client
+  Future<String> export() async {
+    return postmanCollection.toJson();
+  }
+
   @override
   Future onRequest(RequestOptions options) async {
     try {

@@ -10,3 +10,7 @@
 
 * feat: added params for adding only slow requests
 * fix: tests
+
+## [0.9.3] 2020.01.1u8
+
+* fix: body convert

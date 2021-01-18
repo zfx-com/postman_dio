@@ -4,6 +4,13 @@ Logger Interceptor for Dio with export to "Postman Collection v2.1".json
 
 ## Import
 
+```yaml
+postman_dio:
+  git:
+    url: https://github.com/zfx-com/postman_dio
+    ref: v.0.9.3
+```
+
 ```dart
 import 'package:postman_dio/postman_dio.dart';
 ```

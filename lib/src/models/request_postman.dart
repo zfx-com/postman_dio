@@ -81,8 +81,7 @@ class RequestPostman {
     return RequestPostman(
       method: options.method,
       url: options?.path == null ? null : UrlPostman.fromUri(options?.uri),
-      body: BodyPostman(
-          raw: await TransformerJson.encode(DartDynamic.asMap(options?.data))),
+      body: BodyPostman(raw: await TransformerJson.encode(options?.data)),
       header: options?.headers?.keys
           ?.map((key) => HeaderPostman(
                 key: key,

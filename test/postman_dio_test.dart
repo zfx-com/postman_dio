@@ -56,7 +56,7 @@ void main() {
     final request = RequestOptions();
     final response = Response();
     await postmanDioLogger.onRequest(request);
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     await postmanDioLogger.onResponse(response);
     expect(
         PostmanDioLogger.postmanCollection.item

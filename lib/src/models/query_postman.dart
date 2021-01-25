@@ -39,8 +39,7 @@ class QueryPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<QueryPostman> fromJson(String source) async =>
-      QueryPostman.fromMap(await TransformerJson.decode(source));
+  static Future<QueryPostman> fromJson(String source) async => QueryPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

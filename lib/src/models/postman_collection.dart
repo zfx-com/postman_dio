@@ -33,16 +33,14 @@ class PostmanCollection {
 
     return PostmanCollection(
       info: InfoCollection.fromMap(DartDynamic.asMap(map['info'])),
-      item: List<ItemPostmanRequest>.from(DartDynamic.asList(map['item'])?.map(
-          (x) => ItemPostmanRequest.fromMap(
-              DartDynamic.asMap<String, dynamic>(x)))),
+      item: List<ItemPostmanRequest>.from(
+          DartDynamic.asList(map['item'])?.map((x) => ItemPostmanRequest.fromMap(DartDynamic.asMap<String, dynamic>(x)))),
     );
   }
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<PostmanCollection> fromJson(String source) async =>
-      PostmanCollection.fromMap(await TransformerJson.decode(source));
+  static Future<PostmanCollection> fromJson(String source) async => PostmanCollection.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() => 'Postman(info: $info, item: $item)';

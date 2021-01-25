@@ -56,8 +56,7 @@ class DartDynamic {
     }
     l.log('Cast as exception',
         name: 'DartDynamic',
-        error: Exception(
-            'as for method = $method - and type = ${T.runtimeType} not applyed for $value'),
+        error: Exception('as for method = $method - and type = ${T.runtimeType} not applyed for $value'),
         stackTrace: StackTrace.current);
     // ignore: avoid_returning_null
     return null;

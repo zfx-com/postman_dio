@@ -16,9 +16,7 @@ class PostmanDioLogger extends Interceptor {
 
   static PostmanCollection postmanCollection = PostmanCollection(
     info: InfoCollection(
-        name: 'PostmanDioLogger ${DateTime.now().toUtc()}',
-        schema:
-            'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
+        name: 'PostmanDioLogger ${DateTime.now().toUtc()}', schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
     item: [],
   );
 
@@ -34,8 +32,7 @@ class PostmanDioLogger extends Interceptor {
   void Function(Object object) logPrint;
 
   // you can override this for change your log value
-  Future<String> getPrintValue(ItemPostmanRequest request) =>
-      getPrintJson(request);
+  Future<String> getPrintValue(ItemPostmanRequest request) => getPrintJson(request);
 
   ItemPostmanRequest newRequest;
 
@@ -54,8 +51,7 @@ class PostmanDioLogger extends Interceptor {
       );
       postmanCollection.item.add(newRequest);
     } catch (error, stackTrace) {
-      l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+      l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
     return options;
   }
@@ -75,8 +71,7 @@ class PostmanDioLogger extends Interceptor {
         );
       await _log();
     } catch (error, stackTrace) {
-      l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+      l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
     return err;
   }
@@ -92,13 +87,10 @@ class PostmanDioLogger extends Interceptor {
         )
         ..response = <ResponsePostman>[
           ResponsePostman(
-            name: response?.request?.path == null
-                ? null
-                : response?.request?.uri?.toString(),
+            name: response?.request?.path == null ? null : response?.request?.uri?.toString(),
             code: response?.statusCode,
             status: response?.statusMessage,
-            originalRequest:
-                await RequestPostman.fromRequest(response?.request),
+            originalRequest: await RequestPostman.fromRequest(response?.request),
             body: await TransformerJson.encode(response?.data),
             header: response?.headers?.map?.keys
                 ?.map((key) => HeaderPostman(
@@ -110,8 +102,7 @@ class PostmanDioLogger extends Interceptor {
         ];
       await _log();
     } catch (error, stackTrace) {
-      l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+      l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
     return response;
   }
@@ -137,7 +128,7 @@ class PostmanDioLogger extends Interceptor {
   }
 
   Future<String> getPrintJson(ItemPostmanRequest request) async {
-    return request.toJson();
+    return request?.toJson();
   }
 
   Future<String> getPrintSimple(ItemPostmanRequest request) async {

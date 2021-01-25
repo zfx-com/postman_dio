@@ -45,8 +45,7 @@ class BodyPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<BodyPostman> fromJson(String source) async =>
-      BodyPostman.fromMap(await TransformerJson.decode(source));
+  static Future<BodyPostman> fromJson(String source) async => BodyPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() => 'Body(mode: $mode, disabled: $disabled, raw: $raw)';

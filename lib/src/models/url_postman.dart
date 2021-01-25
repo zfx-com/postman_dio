@@ -54,8 +54,7 @@ class UrlPostman {
 
     return UrlPostman(
       raw: map['raw']?.toString(),
-      query: List<QueryPostman>.from(DartDynamic.asList(map['query'])
-          .map((e) => QueryPostman.fromMap(DartDynamic.asMap(e)))),
+      query: List<QueryPostman>.from(DartDynamic.asList(map['query']).map((e) => QueryPostman.fromMap(DartDynamic.asMap(e)))),
       protocol: map['protocol']?.toString(),
       host: List<String>.from(DartDynamic.asList(map['host'])),
       path: List<String>.from(DartDynamic.asList(map['path'])),
@@ -65,19 +64,14 @@ class UrlPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<UrlPostman> fromJson(String source) async =>
-      UrlPostman.fromMap(await TransformerJson.decode(source));
+  static Future<UrlPostman> fromJson(String source) async => UrlPostman.fromMap(await TransformerJson.decode(source));
   static UrlPostman fromUri(Uri uri) {
     return UrlPostman(
       host: uri.host.split('.'),
       path: uri.path.split('.'),
       protocol: uri.scheme,
       port: uri.port,
-      query: uri.query
-          .split('&')
-          .map(QueryPostman.fromString)
-          .where((el) => el != null)
-          .toList(),
+      query: uri.query.split('&').map(QueryPostman.fromString).where((el) => el != null).toList(),
       raw: uri.toString(),
     );
   }

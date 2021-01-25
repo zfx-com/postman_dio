@@ -57,8 +57,7 @@ class RequestPostman {
       method: map['method']?.toString(),
       url: UrlPostman.fromMap(DartDynamic.asMap(map['url'])),
       description: map['description']?.toString(),
-      header: List<HeaderPostman>.from(DartDynamic.asList(map['header'])
-          ?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x)))),
+      header: List<HeaderPostman>.from(DartDynamic.asList(map['header'])?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x)))),
       body: BodyPostman.fromMap(DartDynamic.asMap(map['body'])),
       auth: AuthPostman.fromMap(DartDynamic.asMap(map['auth'])),
     );
@@ -66,8 +65,7 @@ class RequestPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<RequestPostman> fromJson(String source) async =>
-      RequestPostman.fromMap(await TransformerJson.decode(source));
+  static Future<RequestPostman> fromJson(String source) async => RequestPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

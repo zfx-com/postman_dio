@@ -1,8 +1,10 @@
 name: postman_dio
 description: Logger Interceptor for Dio with export to "Postman Collection v2.1".json
-version: 0.9.3
+version: 0.9.4
 author: zfx.com
 homepage: https://pub.dev/packages/postman_dio
+repository: https://github.com/zfx-com/postman_dio/tree/master
+issue_tracker: https://github.com/zfx-com/postman_dio/issues
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

@@ -60,12 +60,10 @@ class ResponsePostman {
 
     return ResponsePostman(
       name: map['name']?.toString(),
-      originalRequest:
-          RequestPostman.fromMap(DartDynamic.asMap(map['originalRequest'])),
+      originalRequest: RequestPostman.fromMap(DartDynamic.asMap(map['originalRequest'])),
       status: map['status']?.toString(),
       code: int.tryParse(map['code']?.toString()),
-      header: List<HeaderPostman>.from(DartDynamic.asList(map['header'])
-          ?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x)))),
+      header: List<HeaderPostman>.from(DartDynamic.asList(map['header'])?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x)))),
       cookie: DartDynamic.asList(map['cookie']),
       body: map['body']?.toString(),
     );
@@ -73,8 +71,7 @@ class ResponsePostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<ResponsePostman> fromJson(String source) async =>
-      ResponsePostman.fromMap(await TransformerJson.decode(source));
+  static Future<ResponsePostman> fromJson(String source) async => ResponsePostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

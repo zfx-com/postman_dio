@@ -1,14 +1,13 @@
 # postman_dio by zfx.com
 
+[![Pub](https://img.shields.io/pub/v/postman_dio.svg)](https://pub.dev/packages/postman_dio)
+
 Logger Interceptor for Dio with export to "Postman Collection v2.1".json
 
 ## Import
 
 ```yaml
-postman_dio:
-  git:
-    url: https://github.com/zfx-com/postman_dio
-    ref: v.0.9.3
+postman_dio: 0.9.4
 ```
 
 ```dart

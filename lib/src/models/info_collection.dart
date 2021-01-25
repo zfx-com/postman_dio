@@ -39,8 +39,7 @@ class InfoCollection {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<InfoCollection> fromJson(String source) async =>
-      InfoCollection.fromMap(await TransformerJson.decode(source));
+  static Future<InfoCollection> fromJson(String source) async => InfoCollection.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() => 'Info(name: $name, schema: $schema)';

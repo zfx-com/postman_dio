@@ -46,15 +46,13 @@ class HeaderPostman {
       key: map['key']?.toString(),
       value: map['value']?.toString(),
       disabled: DartDynamic.asBool(map['disabled']),
-      description:
-          DescriptionPostman.fromMap(DartDynamic.asMap(map['description'])),
+      description: DescriptionPostman.fromMap(DartDynamic.asMap(map['description'])),
     );
   }
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<HeaderPostman> fromJson(String source) async =>
-      HeaderPostman.fromMap(await TransformerJson.decode(source));
+  static Future<HeaderPostman> fromJson(String source) async => HeaderPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

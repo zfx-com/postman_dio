@@ -18,10 +18,8 @@ class ProtocolProfileBehavior {
   }) {
     return ProtocolProfileBehavior(
       followRedirects: followRedirects ?? this.followRedirects,
-      followOriginalHttpMethod:
-          followOriginalHttpMethod ?? this.followOriginalHttpMethod,
-      followAuthorizationHeader:
-          followAuthorizationHeader ?? this.followAuthorizationHeader,
+      followOriginalHttpMethod: followOriginalHttpMethod ?? this.followOriginalHttpMethod,
+      followAuthorizationHeader: followAuthorizationHeader ?? this.followAuthorizationHeader,
     );
   }
 
@@ -40,17 +38,14 @@ class ProtocolProfileBehavior {
 
     return ProtocolProfileBehavior(
       followRedirects: DartDynamic.asBool(map['followRedirects']),
-      followOriginalHttpMethod:
-          DartDynamic.asBool(map['followOriginalHttpMethod']),
-      followAuthorizationHeader:
-          DartDynamic.asBool(map['followAuthorizationHeader']),
+      followOriginalHttpMethod: DartDynamic.asBool(map['followOriginalHttpMethod']),
+      followAuthorizationHeader: DartDynamic.asBool(map['followAuthorizationHeader']),
     );
   }
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<ProtocolProfileBehavior> fromJson(String source) async =>
-      ProtocolProfileBehavior.fromMap(await TransformerJson.decode(source));
+  static Future<ProtocolProfileBehavior> fromJson(String source) async => ProtocolProfileBehavior.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() =>

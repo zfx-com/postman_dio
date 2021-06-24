@@ -7,5 +7,5 @@ class PostmanDioLoggerSimple extends PostmanDioLogger {
     bool enablePrint = true,
   }) : super(logPrint: logPrint, enablePrint: enablePrint);
   @override
-  Future<String> getPrintValue(ItemPostmanRequest request) => getPrintSimple(request);
+  Future<String> getPrintValue(ItemPostmanRequest? request) => getPrintSimple(request);
 }

@@ -12,22 +12,22 @@ class ResponsePostman {
     this.body,
   });
 
-  final String name;
-  final RequestPostman originalRequest;
-  final String status;
-  final int code;
-  final List<HeaderPostman> header;
-  final List<dynamic> cookie;
-  final String body;
+  final String? name;
+  final RequestPostman? originalRequest;
+  final String? status;
+  final int? code;
+  final List<HeaderPostman?>? header;
+  final List<dynamic>? cookie;
+  final String? body;
 
   ResponsePostman copyWith({
-    String name,
-    RequestPostman originalRequest,
-    String status,
-    int code,
-    List<HeaderPostman> header,
-    List<dynamic> cookie,
-    String body,
+    String? name,
+    RequestPostman? originalRequest,
+    String? status,
+    int? code,
+    List<HeaderPostman>? header,
+    List<dynamic>? cookie,
+    String? body,
   }) {
     return ResponsePostman(
       name: name ?? this.name,
@@ -53,7 +53,7 @@ class ResponsePostman {
     };
   }
 
-  static ResponsePostman fromMap(Map<dynamic, dynamic> map) {
+  static ResponsePostman? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -62,8 +62,8 @@ class ResponsePostman {
       name: map['name']?.toString(),
       originalRequest: RequestPostman.fromMap(DartDynamic.asMap(map['originalRequest'])),
       status: map['status']?.toString(),
-      code: int.tryParse(map['code']?.toString()),
-      header: List<HeaderPostman>.from(DartDynamic.asList(map['header'])?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x)))),
+      code: map['code'] == null ? null : int.tryParse(map['code'].toString()),
+      header: DartDynamic.asList(map['header'])?.map((x) => HeaderPostman.fromMap(DartDynamic.asMap(x))).toList(),
       cookie: DartDynamic.asList(map['cookie']),
       body: map['body']?.toString(),
     );
@@ -71,7 +71,7 @@ class ResponsePostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<ResponsePostman> fromJson(String source) async => ResponsePostman.fromMap(await TransformerJson.decode(source));
+  static Future<ResponsePostman?> fromJson(String source) async => ResponsePostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

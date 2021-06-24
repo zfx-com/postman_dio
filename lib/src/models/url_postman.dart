@@ -11,20 +11,20 @@ class UrlPostman {
     this.path,
   });
 
-  final String raw;
-  final List<QueryPostman> query;
-  final String protocol;
-  final List<String> host;
-  final int port;
-  final List<String> path;
+  final String? raw;
+  final List<QueryPostman?>? query;
+  final String? protocol;
+  final List<String>? host;
+  final int? port;
+  final List<String>? path;
 
   UrlPostman copyWith({
-    String raw,
-    List<QueryPostman> query,
-    String protocol,
-    List<String> host,
-    int port,
-    List<String> path,
+    String? raw,
+    List<QueryPostman>? query,
+    String? protocol,
+    List<String>? host,
+    int? port,
+    List<String>? path,
   }) {
     return UrlPostman(
       raw: raw ?? this.raw,
@@ -47,24 +47,24 @@ class UrlPostman {
     };
   }
 
-  static UrlPostman fromMap(Map<dynamic, dynamic> map) {
+  static UrlPostman? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
 
     return UrlPostman(
       raw: map['raw']?.toString(),
-      query: List<QueryPostman>.from(DartDynamic.asList(map['query']).map((e) => QueryPostman.fromMap(DartDynamic.asMap(e)))),
+      query: List<QueryPostman>.from(DartDynamic.asList(map['query'])!.map((e) => QueryPostman.fromMap(DartDynamic.asMap(e)))),
       protocol: map['protocol']?.toString(),
-      host: List<String>.from(DartDynamic.asList(map['host'])),
-      path: List<String>.from(DartDynamic.asList(map['path'])),
-      port: int.tryParse(map['port']?.toString()),
+      host: List<String>.from(DartDynamic.asList(map['host'])!),
+      path: List<String>.from(DartDynamic.asList(map['path'])!),
+      port: map['port'] == null ? null : int.tryParse(map['port'].toString()),
     );
   }
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<UrlPostman> fromJson(String source) async => UrlPostman.fromMap(await TransformerJson.decode(source));
+  static Future<UrlPostman?> fromJson(String source) async => UrlPostman.fromMap(await TransformerJson.decode(source));
   static UrlPostman fromUri(Uri uri) {
     return UrlPostman(
       host: uri.host.split('.'),

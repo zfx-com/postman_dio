@@ -7,7 +7,7 @@ Logger Interceptor for Dio with export to "Postman Collection v2.1".json
 ## Import
 
 ```yaml
-postman_dio: 0.9.4
+postman_dio: 1.0.0
 ```
 
 ```dart

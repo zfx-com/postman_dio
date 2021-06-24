@@ -11,7 +11,7 @@ class PostmanDioLogger extends Interceptor {
 
   // ignore: use_setters_to_change_properties
   static void changeNameCollection(String name) {
-    postmanCollection.info.name = name;
+    postmanCollection.info!.name = name;
   }
 
   static PostmanCollection postmanCollection = PostmanCollection(
@@ -24,7 +24,7 @@ class PostmanDioLogger extends Interceptor {
   final bool enablePrint;
 
   /// Log if the request is executed more than maxMilliseconds ms, if 'null' log all request
-  final int maxMilliseconds;
+  final int? maxMilliseconds;
 
   /// Log printer; defaults logPrint log to console.
   /// In flutter, you'd better use debugPrint.
@@ -32,9 +32,9 @@ class PostmanDioLogger extends Interceptor {
   void Function(Object object) logPrint;
 
   // you can override this for change your log value
-  Future<String> getPrintValue(ItemPostmanRequest request) => getPrintJson(request);
+  Future<String?>? getPrintValue(ItemPostmanRequest? request) => getPrintJson(request);
 
-  ItemPostmanRequest newRequest;
+  ItemPostmanRequest? newRequest;
 
   /// JSON collection for import by the postman or another client
   static Future<String> export() async {
@@ -42,14 +42,14 @@ class PostmanDioLogger extends Interceptor {
   }
 
   @override
-  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler? handler) async {
     try {
       stopwatch.start();
       newRequest = ItemPostmanRequest(
         name: options?.safeUri?.toString(),
         request: await RequestPostman.fromRequest(options),
       );
-      postmanCollection.item.add(newRequest);
+      postmanCollection.item!.add(newRequest);
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
@@ -57,16 +57,16 @@ class PostmanDioLogger extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(DioError err, ErrorInterceptorHandler? handler) async {
     try {
       _checkTime();
       newRequest ??= ItemPostmanRequest(
         name: err?.response?.requestOptions?.path == null ? null : err?.response?.requestOptions?.uri.toString(),
         request: await RequestPostman.fromRequest(err?.response?.requestOptions),
       );
-      newRequest
-        ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest.name}'
-        ..request = newRequest.request?.copyWith(
+      newRequest!
+        ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
+        ..request = newRequest!.request?.copyWith(
           description: err.toString(),
         );
       await _log();
@@ -77,12 +77,12 @@ class PostmanDioLogger extends Interceptor {
   }
 
   @override
-  Future<void> onResponse(Response response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(Response response, ResponseInterceptorHandler? handler) async {
     try {
       _checkTime();
-      newRequest
-        ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest.name}'
-        ..request = newRequest.request?.copyWith(
+      newRequest!
+        ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
+        ..request = newRequest!.request?.copyWith(
           description: response?.toString(),
         )
         ..response = <ResponsePostman>[
@@ -110,8 +110,8 @@ class PostmanDioLogger extends Interceptor {
   void _checkTime() {
     stopwatch.stop();
     if (maxMilliseconds != null) {
-      if (stopwatch.elapsedMilliseconds < maxMilliseconds) {
-        postmanCollection.item.remove(newRequest);
+      if (stopwatch.elapsedMilliseconds < maxMilliseconds!) {
+        postmanCollection.item!.remove(newRequest);
       }
     }
   }
@@ -119,19 +119,19 @@ class PostmanDioLogger extends Interceptor {
   Future<void> _log() async {
     if (enablePrint) {
       if (maxMilliseconds != null) {
-        if (stopwatch.elapsedMilliseconds < maxMilliseconds) {
+        if (stopwatch.elapsedMilliseconds < maxMilliseconds!) {
           return;
         }
       }
-      logPrint(await getPrintValue(newRequest));
+      logPrint(await getPrintValue(newRequest) ?? '');
     }
   }
 
-  Future<String> getPrintJson(ItemPostmanRequest request) async {
+  Future<String?>? getPrintJson(ItemPostmanRequest? request) async {
     return request?.toJson();
   }
 
-  Future<String> getPrintSimple(ItemPostmanRequest request) async {
+  Future<String> getPrintSimple(ItemPostmanRequest? request) async {
     return '${request?.request?.method}:${request?.response?.firstOrDefault?.code} ${request?.request?.url?.raw}';
   }
 }

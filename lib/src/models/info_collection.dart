@@ -6,12 +6,12 @@ class InfoCollection {
     this.schema,
   });
 
-  String name;
-  final String schema;
+  String? name;
+  final String? schema;
 
   InfoCollection copyWith({
-    String name,
-    String schema,
+    String? name,
+    String? schema,
   }) {
     return InfoCollection(
       name: name ?? this.name,
@@ -26,7 +26,7 @@ class InfoCollection {
     };
   }
 
-  static InfoCollection fromMap(Map<dynamic, dynamic> map) {
+  static InfoCollection? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -39,7 +39,7 @@ class InfoCollection {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<InfoCollection> fromJson(String source) async => InfoCollection.fromMap(await TransformerJson.decode(source));
+  static Future<InfoCollection?> fromJson(String source) async => InfoCollection.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() => 'Info(name: $name, schema: $schema)';

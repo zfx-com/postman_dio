@@ -9,47 +9,47 @@ void main() {
     final request = RequestOptions(path: '');
     final handler = RequestInterceptorHandler();
     await postmanDioLogger.onRequest(request, handler);
-    expect(PostmanDioLogger.postmanCollection.item.contains(postmanDioLogger.newRequest), true);
-    final response = Response(requestOptions: null);
+    expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), true);
+    final response = Response(requestOptions: RequestOptions(path: ''));
     final handlerResponce = ResponseInterceptorHandler();
     await postmanDioLogger.onResponse(response, handlerResponce);
-    expect(PostmanDioLogger.postmanCollection.item.contains(postmanDioLogger.newRequest), true);
+    expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), true);
 
     postmanDioLogger = PostmanDioLogger();
-    await postmanDioLogger.onRequest(null, null);
-    await postmanDioLogger.onResponse(null, null);
+    await postmanDioLogger.onRequest(RequestOptions(path: ''), null);
+    await postmanDioLogger.onResponse(Response(requestOptions: RequestOptions(path: '')), null);
 
     postmanDioLogger = PostmanDioLogger();
-    await postmanDioLogger.onRequest(null, null);
-    await postmanDioLogger.onError(null, null);
+    await postmanDioLogger.onRequest(RequestOptions(path: ''), null);
+    await postmanDioLogger.onError(DioError(requestOptions: RequestOptions(path: '')), null);
 
     postmanDioLogger = PostmanDioLogger();
     await postmanDioLogger.onRequest(request, null);
-    final dioError = DioError(requestOptions: null);
+    final dioError = DioError(requestOptions: RequestOptions(path: ''));
     await postmanDioLogger.onError(dioError, null);
-    expect(PostmanDioLogger.postmanCollection.item.contains(postmanDioLogger.newRequest), true);
+    expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), true);
   });
 
   test('quick', () async {
     final postmanDioLogger = PostmanDioLogger(maxMilliseconds: 1000);
 
     final request = RequestOptions(path: '');
-    final response = Response(requestOptions: null);
+    final response = Response(requestOptions: RequestOptions(path: ''));
     final handler = RequestInterceptorHandler();
     await postmanDioLogger.onRequest(request, handler);
     final handlerResponce = ResponseInterceptorHandler();
     await postmanDioLogger.onResponse(response, handlerResponce);
-    expect(PostmanDioLogger.postmanCollection.item.contains(postmanDioLogger.newRequest), false);
+    expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), false);
   });
 
   test('slow', () async {
     final postmanDioLogger = PostmanDioLogger(maxMilliseconds: 1000);
 
     final request = RequestOptions(path: '');
-    final response = Response(requestOptions: null);
+    final response = Response(requestOptions: RequestOptions(path: ''));
     await postmanDioLogger.onRequest(request, null);
     await Future.delayed(const Duration(seconds: 2));
     await postmanDioLogger.onResponse(response, null);
-    expect(PostmanDioLogger.postmanCollection.item.contains(postmanDioLogger.newRequest), true);
+    expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), true);
   });
 }

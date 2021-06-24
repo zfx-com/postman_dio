@@ -7,14 +7,14 @@ class ProtocolProfileBehavior {
     this.followAuthorizationHeader,
   });
 
-  final bool followRedirects;
-  final bool followOriginalHttpMethod;
-  final bool followAuthorizationHeader;
+  final bool? followRedirects;
+  final bool? followOriginalHttpMethod;
+  final bool? followAuthorizationHeader;
 
   ProtocolProfileBehavior copyWith({
-    bool followRedirects,
-    bool followOriginalHttpMethod,
-    bool followAuthorizationHeader,
+    bool? followRedirects,
+    bool? followOriginalHttpMethod,
+    bool? followAuthorizationHeader,
   }) {
     return ProtocolProfileBehavior(
       followRedirects: followRedirects ?? this.followRedirects,
@@ -31,7 +31,7 @@ class ProtocolProfileBehavior {
     };
   }
 
-  static ProtocolProfileBehavior fromMap(Map<dynamic, dynamic> map) {
+  static ProtocolProfileBehavior? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -45,7 +45,7 @@ class ProtocolProfileBehavior {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<ProtocolProfileBehavior> fromJson(String source) async => ProtocolProfileBehavior.fromMap(await TransformerJson.decode(source));
+  static Future<ProtocolProfileBehavior?> fromJson(String source) async => ProtocolProfileBehavior.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() =>

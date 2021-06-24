@@ -6,12 +6,12 @@ class QueryPostman {
     this.value,
   });
 
-  final String key;
-  final String value;
+  final String? key;
+  final String? value;
 
   QueryPostman copyWith({
-    String key,
-    String value,
+    String? key,
+    String? value,
   }) {
     return QueryPostman(
       key: key ?? this.key,
@@ -26,7 +26,7 @@ class QueryPostman {
     };
   }
 
-  static QueryPostman fromMap(Map<dynamic, dynamic> map) {
+  static QueryPostman? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -39,14 +39,14 @@ class QueryPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<QueryPostman> fromJson(String source) async => QueryPostman.fromMap(await TransformerJson.decode(source));
+  static Future<QueryPostman?> fromJson(String source) async => QueryPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {
     return 'Query(key: $key, value: $value)';
   }
 
-  static QueryPostman fromString(String e) {
+  static QueryPostman? fromString(String? e) {
     if (e == null) {
       return null;
     }

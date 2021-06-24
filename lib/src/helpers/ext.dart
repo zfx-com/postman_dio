@@ -3,12 +3,12 @@ import 'package:postman_dio/helpers.dart';
 
 extension Linq<T> on List<T> {
   /// default = null
-  T get firstOrDefault => isEmpty ? null : first;
+  T? get firstOrDefault => isEmpty ? null : first;
 }
 
 extension RequestOptionsX on RequestOptions {
   /// default = null
-  Uri get safeUri {
+  Uri? get safeUri {
     try {
       if (this == null || path == null) {
         return null;
@@ -29,7 +29,7 @@ extension RequestOptionsX on RequestOptions {
       // Normalize the url.
       return Uri.parse(_url).normalizePath();
     } catch (_, stackTrace) {
-      l.log(_?.toString(), name: 'RequestOptionsX', error: _, stackTrace: stackTrace);
+      l.log(_.toString(), name: 'RequestOptionsX', error: _, stackTrace: stackTrace);
       return null;
     }
   }
@@ -37,47 +37,47 @@ extension RequestOptionsX on RequestOptions {
 
 class DartDynamic {
   // ignore: avoid_annotating_with_dynamic
-  static double asDouble(dynamic value) {
+  static double? asDouble(dynamic value) {
     return asT<double>(value, method: 'asDouble');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static bool asBool(dynamic value) {
+  static bool? asBool(dynamic value) {
     return asT<bool>(value, method: 'asBool');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static int asInt(dynamic value) {
+  static int? asInt(dynamic value) {
     return asT<int>(value, method: 'asInt');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static Exception asException(dynamic value) {
+  static Exception? asException(dynamic value) {
     return asT<Exception>(value, method: 'asException');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static DateTime asDateTime(dynamic value) {
+  static DateTime? asDateTime(dynamic value) {
     return asT<DateTime>(value, method: 'asDateTime');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static List<T> asList<T>(dynamic value) {
+  static List<T>? asList<T>(dynamic value) {
     return asT<List<T>>(value, method: 'asList');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static Map<K, V> asMap<K, V>(dynamic value) {
+  static Map<K, V>? asMap<K, V>(dynamic value) {
     return asT<Map<K, V>>(value, method: 'asMap');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static Iterable<T> asIterable<T>(dynamic value) {
+  static Iterable<T>? asIterable<T>(dynamic value) {
     return asT<Iterable<T>>(value, method: 'asIterable');
   }
 
   // ignore: avoid_annotating_with_dynamic
-  static T asT<T>(dynamic value, {String method = 'asT'}) {
+  static T? asT<T>(dynamic value, {String method = 'asT'}) {
     if (value == null) {
       return null;
     }

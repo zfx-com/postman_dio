@@ -7,14 +7,14 @@ class BodyPostman {
     this.raw,
   });
 
-  final String mode;
-  final bool disabled;
-  final String raw;
+  final String? mode;
+  final bool? disabled;
+  final String? raw;
 
   BodyPostman copyWith({
-    String mode,
-    bool disabled,
-    String raw,
+    String? mode,
+    bool? disabled,
+    String? raw,
   }) {
     return BodyPostman(
       mode: mode ?? this.mode,
@@ -31,7 +31,7 @@ class BodyPostman {
     };
   }
 
-  static BodyPostman fromMap(Map<dynamic, dynamic> map) {
+  static BodyPostman? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -45,7 +45,7 @@ class BodyPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<BodyPostman> fromJson(String source) async => BodyPostman.fromMap(await TransformerJson.decode(source));
+  static Future<BodyPostman?> fromJson(String source) async => BodyPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() => 'Body(mode: $mode, disabled: $disabled, raw: $raw)';

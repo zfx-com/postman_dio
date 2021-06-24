@@ -9,16 +9,16 @@ class HeaderPostman {
     this.description,
   });
 
-  final String key;
-  final String value;
-  final bool disabled;
-  final DescriptionPostman description;
+  final String? key;
+  final String? value;
+  final bool? disabled;
+  final DescriptionPostman? description;
 
   HeaderPostman copyWith({
-    String key,
-    String value,
-    bool disabled,
-    DescriptionPostman description,
+    String? key,
+    String? value,
+    bool? disabled,
+    DescriptionPostman? description,
   }) {
     return HeaderPostman(
       key: key ?? this.key,
@@ -37,7 +37,7 @@ class HeaderPostman {
     };
   }
 
-  static HeaderPostman fromMap(Map<dynamic, dynamic> map) {
+  static HeaderPostman? fromMap(Map<dynamic, dynamic>? map) {
     if (map == null) {
       return null;
     }
@@ -52,7 +52,7 @@ class HeaderPostman {
 
   Future<String> toJson() async => TransformerJson.encode(toMap());
 
-  static Future<HeaderPostman> fromJson(String source) async => HeaderPostman.fromMap(await TransformerJson.decode(source));
+  static Future<HeaderPostman?> fromJson(String source) async => HeaderPostman.fromMap(await TransformerJson.decode(source));
 
   @override
   String toString() {

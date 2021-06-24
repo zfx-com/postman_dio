@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 class l {
   static void log(
     String message, {
-    DateTime time,
-    int sequenceNumber,
+    DateTime? time,
+    int? sequenceNumber,
     int level = 0,
     String name = '',
     // ignore: avoid_annotating_with_dynamic
     dynamic error,
-    StackTrace stackTrace,
+    StackTrace? stackTrace,
   }) {
     if (kIsWeb) {
       var postfix = '';

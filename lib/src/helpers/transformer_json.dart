@@ -10,7 +10,7 @@ class TransformerJson {
     return result;
   }
 
-  static Future<Map<dynamic, dynamic>> decode(String text) async {
+  static Future<Map<dynamic, dynamic>?> decode(String? text) async {
     if (text == null) {
       return null;
     }
@@ -27,7 +27,7 @@ class TransformerJson {
     }
   }
 
-  static Future<List<dynamic>> decodeList(String text) async {
+  static Future<List<dynamic>?> decodeList(String? text) async {
     if (text == null) {
       return null;
     }
@@ -45,7 +45,7 @@ class TransformerJson {
     // return compute(_decode, text);
   }
 
-  static Future<dynamic> decodeDynamic(String text) async {
+  static Future<dynamic> decodeDynamic(String? text) async {
     if (text == null) {
       return null;
     }
@@ -59,11 +59,11 @@ class TransformerJson {
     // return compute(_decode, text);
   }
 
-  static String _encode(Object json) {
+  static String _encode(Object? json) {
     return jsonEncode(json);
   }
 
-  static Future<String> encode(Object json) async {
+  static Future<String> encode(Object? json) async {
     if (kIsWeb) {
       return _encode(json);
     }

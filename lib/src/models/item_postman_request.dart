@@ -19,7 +19,7 @@ class ItemPostmanRequest {
       'name': name,
       'request': request?.toMap(),
       'protocolProfileBehavior': protocolProfileBehavior?.toMap(),
-      'response': response?.map((x) => x?.toMap())?.toList(),
+      'response': response?.map((x) => x.toMap()).toList(),
     };
   }
 

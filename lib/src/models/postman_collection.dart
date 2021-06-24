@@ -22,7 +22,7 @@ class PostmanCollection {
   Map<String, dynamic> toMap() {
     return {
       'info': info?.toMap(),
-      'item': item?.map((x) => x?.toMap())?.toList(),
+      'item': item?.map((x) => x?.toMap()).toList(),
     };
   }
 

@@ -42,7 +42,7 @@ class RequestPostman {
       'method': method,
       'url': url!.toMap(),
       'description': description,
-      'header': header?.map((x) => x?.toMap())?.toList(),
+      'header': header?.map((x) => x?.toMap()).toList(),
       'body': body?.toMap(),
       'auth': auth?.toMap(),
     };
@@ -79,13 +79,13 @@ class RequestPostman {
     return RequestPostman(
       method: options.method,
       url: UrlPostman.fromUri(options.safeUri!),
-      body: BodyPostman(raw: await TransformerJson.encode(options?.data)),
-      header: options?.headers?.keys
-          ?.map((key) => HeaderPostman(
+      body: BodyPostman(raw: await TransformerJson.encode(options.data)),
+      header: options.headers.keys
+          .map((key) => HeaderPostman(
                 key: key,
                 value: options.headers[key]?.toString(),
               ))
-          ?.toList(),
+          .toList(),
     );
   }
 }

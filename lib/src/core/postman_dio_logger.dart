@@ -46,7 +46,7 @@ class PostmanDioLogger extends Interceptor {
     try {
       stopwatch.start();
       newRequest = ItemPostmanRequest(
-        name: options?.safeUri?.toString(),
+        name: options.safeUri?.toString(),
         request: await RequestPostman.fromRequest(options),
       );
       postmanCollection.item!.add(newRequest);
@@ -61,8 +61,8 @@ class PostmanDioLogger extends Interceptor {
     try {
       _checkTime();
       newRequest ??= ItemPostmanRequest(
-        name: err?.response?.requestOptions?.path == null ? null : err?.response?.requestOptions?.uri.toString(),
-        request: await RequestPostman.fromRequest(err?.response?.requestOptions),
+        name: err.response?.requestOptions.path == null ? null : err.response?.requestOptions.uri.toString(),
+        request: await RequestPostman.fromRequest(err.response?.requestOptions),
       );
       newRequest!
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
@@ -83,21 +83,21 @@ class PostmanDioLogger extends Interceptor {
       newRequest!
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
         ..request = newRequest!.request?.copyWith(
-          description: response?.toString(),
+          description: response.toString(),
         )
         ..response = <ResponsePostman>[
           ResponsePostman(
-            name: response?.requestOptions?.safeUri?.toString(),
-            code: response?.statusCode,
-            status: response?.statusMessage,
-            originalRequest: await RequestPostman.fromRequest(response?.requestOptions),
-            body: await TransformerJson.encode(response?.data),
-            header: response?.headers?.map?.keys
-                ?.map((key) => HeaderPostman(
+            name: response.requestOptions.safeUri?.toString(),
+            code: response.statusCode,
+            status: response.statusMessage,
+            originalRequest: await RequestPostman.fromRequest(response.requestOptions),
+            body: await TransformerJson.encode(response.data),
+            header: response.headers.map.keys
+                .map((key) => HeaderPostman(
                       key: key,
                       value: response.headers[key]?.toString(),
                     ))
-                ?.toList(),
+                .toList(),
           ),
         ];
       await _log();

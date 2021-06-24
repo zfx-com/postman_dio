@@ -22,6 +22,6 @@ class l {
       print('$name: $message $postfix');
     }
 
-    developer.log(message ?? '', name: name, error: error, stackTrace: stackTrace);
+    developer.log(message, name: name, error: error, stackTrace: stackTrace);
   }
 }

@@ -39,11 +39,11 @@ class UrlPostman {
   Map<String, dynamic> toMap() {
     return {
       'raw': raw,
-      'query': query?.map((x) => x?.toMap())?.toList(),
+      'query': query?.map((x) => x?.toMap()).toList(),
       'protocol': protocol,
-      'host': host?.map((x) => x)?.toList(),
+      'host': host?.map((x) => x).toList(),
       'port': port,
-      'path': path?.map((x) => x)?.toList(),
+      'path': path?.map((x) => x).toList(),
     };
   }
 

@@ -46,7 +46,7 @@ class ResponsePostman {
       'originalRequest': originalRequest?.toMap(),
       'status': status,
       'code': code,
-      'header': header?.map((x) => x?.toMap())?.toList(),
+      'header': header?.map((x) => x?.toMap()).toList(),
       'cookie': cookie,
       'body': body,
       '_postman_previewlanguage': 'json',

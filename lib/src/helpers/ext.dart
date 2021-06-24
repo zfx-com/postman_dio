@@ -10,9 +10,6 @@ extension RequestOptionsX on RequestOptions {
   /// default = null
   Uri? get safeUri {
     try {
-      if (this == null || path == null) {
-        return null;
-      }
       var _url = path;
       if (!_url.startsWith(RegExp(r'https?:'))) {
         _url = baseUrl + _url;

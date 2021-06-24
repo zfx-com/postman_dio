@@ -1,8 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:postman_dio/helpers.dart';
 
 extension Linq<T> on List<T> {
   /// default = null
   T get firstOrDefault => isEmpty ? null : first;
+}
+
+extension RequestOptionsX on RequestOptions {
+  /// default = null
+  Uri get safeUri {
+    try {
+      if (this == null || path == null) {
+        return null;
+      }
+      var _url = path;
+      if (!_url.startsWith(RegExp(r'https?:'))) {
+        _url = baseUrl + _url;
+        final s = _url.split(':/');
+        if (s.length < 2) {
+          return Uri.parse(path).normalizePath();
+        }
+        _url = '${s[0]}:/${s[1].replaceAll('//', '/')}';
+      }
+      final query = Transformer.urlEncodeMap(queryParameters, listFormat);
+      if (query.isNotEmpty) {
+        _url += (_url.contains('?') ? '&' : '?') + query;
+      }
+      // Normalize the url.
+      return Uri.parse(_url).normalizePath();
+    } catch (_, stackTrace) {
+      l.log(_?.toString(), name: 'RequestOptionsX', error: _, stackTrace: stackTrace);
+      return null;
+    }
+  }
 }
 
 class DartDynamic {

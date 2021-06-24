@@ -42,27 +42,27 @@ class PostmanDioLogger extends Interceptor {
   }
 
   @override
-  Future onRequest(RequestOptions options) async {
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     try {
       stopwatch.start();
       newRequest = ItemPostmanRequest(
-        name: options?.path == null ? null : options?.uri?.toString(),
+        name: options?.safeUri?.toString(),
         request: await RequestPostman.fromRequest(options),
       );
       postmanCollection.item.add(newRequest);
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
-    return options;
+    return handler?.next(options);
   }
 
   @override
-  Future onError(DioError err) async {
+  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     try {
       _checkTime();
       newRequest ??= ItemPostmanRequest(
-        name: err?.request?.path == null ? null : err?.request?.uri.toString(),
-        request: await RequestPostman.fromRequest(err?.request),
+        name: err?.response?.requestOptions?.path == null ? null : err?.response?.requestOptions?.uri.toString(),
+        request: await RequestPostman.fromRequest(err?.response?.requestOptions),
       );
       newRequest
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest.name}'
@@ -73,24 +73,24 @@ class PostmanDioLogger extends Interceptor {
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
-    return err;
+    return handler?.next(err);
   }
 
   @override
-  Future onResponse(Response response) async {
+  Future<void> onResponse(Response response, ResponseInterceptorHandler handler) async {
     try {
       _checkTime();
       newRequest
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest.name}'
-        ..request = newRequest.request.copyWith(
+        ..request = newRequest.request?.copyWith(
           description: response?.toString(),
         )
         ..response = <ResponsePostman>[
           ResponsePostman(
-            name: response?.request?.path == null ? null : response?.request?.uri?.toString(),
+            name: response?.requestOptions?.safeUri?.toString(),
             code: response?.statusCode,
             status: response?.statusMessage,
-            originalRequest: await RequestPostman.fromRequest(response?.request),
+            originalRequest: await RequestPostman.fromRequest(response?.requestOptions),
             body: await TransformerJson.encode(response?.data),
             header: response?.headers?.map?.keys
                 ?.map((key) => HeaderPostman(
@@ -104,7 +104,7 @@ class PostmanDioLogger extends Interceptor {
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
-    return response;
+    return handler?.next(response);
   }
 
   void _checkTime() {
@@ -116,7 +116,7 @@ class PostmanDioLogger extends Interceptor {
     }
   }
 
-  Future _log() async {
+  Future<void> _log() async {
     if (enablePrint) {
       if (maxMilliseconds != null) {
         if (stopwatch.elapsedMilliseconds < maxMilliseconds) {

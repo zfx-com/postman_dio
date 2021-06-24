@@ -78,7 +78,7 @@ class RequestPostman {
     }
     return RequestPostman(
       method: options.method,
-      url: options?.path == null ? null : UrlPostman.fromUri(options?.uri),
+      url: UrlPostman.fromUri(options?.safeUri),
       body: BodyPostman(raw: await TransformerJson.encode(options?.data)),
       header: options?.headers?.keys
           ?.map((key) => HeaderPostman(

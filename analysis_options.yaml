@@ -15,7 +15,7 @@ linter:
     # - prefer_int_literals
     # - prefer_const_constructors_in_immutables
     # - close_sinks
-    - avoid_as
+    # - avoid_as
 
     # - avoid_web_libraries_in_flutter (experimental)
     # - invariant_booleans (experimental)

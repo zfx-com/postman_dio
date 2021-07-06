@@ -79,7 +79,7 @@ class RequestPostman {
     return RequestPostman(
       method: options.method,
       url: UrlPostman.fromUri(options.safeUri!),
-      body: BodyPostman(raw: await TransformerJson.encode(options.data)),
+      body: BodyPostman(raw: options.data is FormData ? options.data?.toString() : await TransformerJson.encode(options.data)),
       header: options.headers.keys
           .map((key) => HeaderPostman(
                 key: key,

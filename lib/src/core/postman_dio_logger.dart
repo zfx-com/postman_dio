@@ -7,6 +7,7 @@ class PostmanDioLogger extends Interceptor {
     this.logPrint = print,
     this.enablePrint = false,
     this.maxMilliseconds,
+    this.options = const PostmanDioLoggerOptions(),
   });
 
   // ignore: use_setters_to_change_properties
@@ -16,7 +17,8 @@ class PostmanDioLogger extends Interceptor {
 
   static PostmanCollection postmanCollection = PostmanCollection(
     info: InfoCollection(
-        name: 'PostmanDioLogger ${DateTime.now().toUtc()}', schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
+        name: 'PostmanDioLogger ${DateTime.now().toUtc()}',
+        schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
     item: [],
   );
 
@@ -30,6 +32,9 @@ class PostmanDioLogger extends Interceptor {
   /// In flutter, you'd better use debugPrint.
   /// you can also write log in a file.
   void Function(Object object) logPrint;
+
+  /// Additional logger options.
+  final PostmanDioLoggerOptions options;
 
   // you can override this for change your log value
   Future<String?>? getPrintValue(ItemPostmanRequest? request) => getPrintJson(request);
@@ -69,7 +74,7 @@ class PostmanDioLogger extends Interceptor {
         ..request = newRequest!.request?.copyWith(
           description: err.toString(),
         );
-      await _log();
+      await _log(newRequest!);
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
@@ -94,13 +99,13 @@ class PostmanDioLogger extends Interceptor {
             body: await TransformerJson.encode(response.data),
             header: response.headers.map.keys
                 .map((key) => HeaderPostman(
-                      key: key,
-                      value: response.headers[key]?.toString(),
-                    ))
+              key: key,
+              value: response.headers[key]?.toString(),
+            ))
                 .toList(),
           ),
         ];
-      await _log();
+      await _log(newRequest!);
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
     }
@@ -116,14 +121,15 @@ class PostmanDioLogger extends Interceptor {
     }
   }
 
-  Future<void> _log() async {
-    if (enablePrint) {
+  Future<void> _log(ItemPostmanRequest request) async {
+    final requestSucceed = request.response?.firstOrDefault?.code == 200;
+    if (enablePrint && ((options.printOnSuccess && requestSucceed) || (options.printOnError && !requestSucceed))) {
       if (maxMilliseconds != null) {
         if (stopwatch.elapsedMilliseconds < maxMilliseconds!) {
           return;
         }
       }
-      logPrint(await getPrintValue(newRequest) ?? '');
+      logPrint(await getPrintValue(request) ?? '');
     }
   }
 
@@ -134,4 +140,18 @@ class PostmanDioLogger extends Interceptor {
   Future<String> getPrintSimple(ItemPostmanRequest? request) async {
     return '${request?.request?.method}:${request?.response?.firstOrDefault?.code} ${request?.request?.url?.raw}';
   }
+}
+
+/// Additional configuration options for PostmanDioLogger.
+class PostmanDioLoggerOptions {
+  const PostmanDioLoggerOptions({
+    this.printOnSuccess = true,
+    this.printOnError = true,
+  });
+
+  /// if true, [PostmanDioLogger.logPrint] closure will be called on request success.
+  final bool printOnSuccess;
+
+  /// if true, [PostmanDioLogger.logPrint] closure will be called on request error.
+  final bool printOnError;
 }

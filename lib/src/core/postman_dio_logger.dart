@@ -17,8 +17,7 @@ class PostmanDioLogger extends Interceptor {
 
   static PostmanCollection postmanCollection = PostmanCollection(
     info: InfoCollection(
-        name: 'PostmanDioLogger ${DateTime.now().toUtc()}',
-        schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
+        name: 'PostmanDioLogger ${DateTime.now().toUtc()}', schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
     item: [],
   );
 
@@ -99,9 +98,9 @@ class PostmanDioLogger extends Interceptor {
             body: await TransformerJson.encode(response.data),
             header: response.headers.map.keys
                 .map((key) => HeaderPostman(
-              key: key,
-              value: response.headers[key]?.toString(),
-            ))
+                      key: key,
+                      value: response.headers[key]?.toString(),
+                    ))
                 .toList(),
           ),
         ];
@@ -149,9 +148,9 @@ class PostmanDioLoggerOptions {
     this.printOnError = true,
   });
 
-  /// if true, [PostmanDioLogger.logPrint] closure will be called on request success.
+  /// if true, [PostmanDioLogger.logPrint] will be called on request success.
   final bool printOnSuccess;
 
-  /// if true, [PostmanDioLogger.logPrint] closure will be called on request error.
+  /// if true, [PostmanDioLogger.logPrint] will be called on request error.
   final bool printOnError;
 }

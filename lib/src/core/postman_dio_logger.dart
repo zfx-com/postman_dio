@@ -68,7 +68,22 @@ class PostmanDioLogger extends Interceptor {
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
         ..request = newRequest!.request?.copyWith(
           description: err.toString(),
-        );
+        )
+        ..response = <ResponsePostman>[
+          ResponsePostman(
+            name: newRequest!.name,
+            code: err.response?.statusCode,
+            status: err.response?.statusMessage,
+            originalRequest: await RequestPostman.fromRequest(err.response?.requestOptions),
+            body: err.response?.data == null ? await TransformerJson.encode(err.response?.data) : err.message,
+            header: err.response?.headers.map.keys
+                .map((key) => HeaderPostman(
+                      key: key,
+                      value: err.response?.headers[key]?.toString(),
+                    ))
+                .toList(),
+          ),
+        ];
       await _log();
     } catch (error, stackTrace) {
       l.log('$error', name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);

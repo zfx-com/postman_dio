@@ -3,6 +3,6 @@ repos:
   hooks:
     - id: flutter-format-lib
       name: format-lib
-      entry: dartfmt -l 150 -w lib
+      entry: dart format -l 150 lib
       language: system
       files: lib/* # Only format source files

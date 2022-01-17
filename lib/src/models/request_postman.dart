@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:postman_dio/models.dart';
+
 import 'package:postman_dio/helpers.dart';
+import 'package:postman_dio/models.dart';
 
 class RequestPostman {
   RequestPostman({

@@ -1,5 +1,5 @@
-import 'package:postman_dio/models.dart';
 import 'package:postman_dio/helpers.dart';
+import 'package:postman_dio/models.dart';
 
 class HeaderPostman {
   HeaderPostman({

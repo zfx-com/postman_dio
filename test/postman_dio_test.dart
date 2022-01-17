@@ -52,4 +52,43 @@ void main() {
     await postmanDioLogger.onResponse(response, null);
     expect(PostmanDioLogger.postmanCollection.item!.contains(postmanDioLogger.newRequest), true);
   });
+
+  group('logger print options', () {
+    test('do not print on request success', () async {
+      var isLogPrinted = false;
+      final postmanDioLogger = PostmanDioLogger(
+        enablePrint: true,
+        options: const PostmanDioLoggerOptions(
+          printOnSuccess: false,
+        ),
+        logPrint: (_) => isLogPrinted = true,
+      );
+      final request = RequestOptions(path: '');
+      final response = Response(requestOptions: RequestOptions(path: ''), statusCode: 200);
+      await postmanDioLogger.onRequest(request, null);
+      final handler = ResponseInterceptorHandler();
+      await postmanDioLogger.onResponse(response, handler);
+      if (isLogPrinted) {
+        throw StateError('logPrint should not be called on request success if printOnSuccess option is false');
+      }
+    });
+    test('do not print on request error', () async {
+      var isLogPrinted = false;
+      final postmanDioLogger = PostmanDioLogger(
+        enablePrint: true,
+        options: const PostmanDioLoggerOptions(
+          printOnError: false,
+        ),
+        logPrint: (_) => isLogPrinted = true,
+      );
+      final request = RequestOptions(path: '');
+      final response = Response(requestOptions: RequestOptions(path: ''), statusCode: 404);
+      await postmanDioLogger.onRequest(request, null);
+      final handler = ResponseInterceptorHandler();
+      await postmanDioLogger.onResponse(response, handler);
+      if (isLogPrinted) {
+        throw StateError('logPrint should not be called on request error if printOnError option is false');
+      }
+    });
+  });
 }

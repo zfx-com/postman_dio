@@ -3,8 +3,9 @@ import 'package:postman_dio/models.dart';
 
 class ItemPostmanRequest {
   ItemPostmanRequest({
-    this.name,
-    this.request,
+    required this.name,
+    required this.request,
+    required this.stopwatch,
     this.protocolProfileBehavior,
     this.response,
   });
@@ -13,11 +14,13 @@ class ItemPostmanRequest {
   RequestPostman? request;
   ProtocolProfileBehavior? protocolProfileBehavior;
   List<ResponsePostman>? response;
+  Stopwatch stopwatch;
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'request': request?.toMap(),
+      'stopwatch': stopwatch.elapsedMilliseconds,
       'protocolProfileBehavior': protocolProfileBehavior?.toMap(),
       'response': response?.map((x) => x.toMap()).toList(),
     };
@@ -31,6 +34,7 @@ class ItemPostmanRequest {
     return ItemPostmanRequest(
       name: map['name']?.toString(),
       request: RequestPostman.fromMap(DartDynamic.asMap(map['request'])),
+      stopwatch: Stopwatch(),
       protocolProfileBehavior: ProtocolProfileBehavior.fromMap(DartDynamic.asMap(map['protocolProfileBehavior'])),
       response: List<ResponsePostman>.from(
         DartDynamic.asList(map['response'])!.map((e) => ResponsePostman.fromMap(DartDynamic.asMap(e))),
@@ -44,6 +48,6 @@ class ItemPostmanRequest {
 
   @override
   String toString() {
-    return 'Item(name: $name, request: $request, protocolProfileBehavior: $protocolProfileBehavior, response: $response)';
+    return 'Item(name: $name, request: $request, protocolProfileBehavior: $protocolProfileBehavior, response: $response, stopwatch: ${stopwatch.elapsedMilliseconds})';
   }
 }
